@@ -9,6 +9,7 @@
  *
  * @author 		Dave Lens <dave@netlash.com>
  * @author		Davy Hellemans <davy@netlash.com>
+ * @author		Tijs Verkoyen <tijs@sumocoders.be>
  * @since		2.0
  */
 class BackendTagsIndex extends BackendBaseActionIndex
@@ -56,14 +57,14 @@ class BackendTagsIndex extends BackendBaseActionIndex
 
 		// add mass action dropdown
 		$ddmMassAction = new SpoonFormDropdown('action', array('delete' => BL::getLabel('Delete')), 'delete');
-		$ddmMassAction->setOptionAttributes('delete', array('rel' => 'confirmDelete'));
+		$ddmMassAction->setOptionAttributes('delete', array('message-id' => 'confirmDelete'));
 		$this->datagrid->setMassAction($ddmMassAction);
 
 		// add column
 		$this->datagrid->addColumn('edit', null, BL::getLabel('Edit'), BackendModel::createURLForAction('edit') .'&amp;id=[id]', BL::getLabel('Edit'));
 
 		// add attributes, so the inline editing has all the needed data
-		$this->datagrid->setColumnAttributes('tag', array('rel' => '{id:[id]}'));
+		$this->datagrid->setColumnAttributes('tag', array('data-id' => '{id:[id]}'));
 	}
 
 

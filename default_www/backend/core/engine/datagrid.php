@@ -13,7 +13,7 @@
  * @subpackage	datagrid
  *
  * @author 		Davy Hellemans <davy@netlash.com>
- * @author 		Tijs Verkoyen <tijs@netlash.com>
+ * @author 		Tijs Verkoyen <tijs@sumocoders.be>
  * @since		2.0
  */
 class BackendDataGrid extends SpoonDataGrid
@@ -179,7 +179,7 @@ class BackendDataGrid extends SpoonDataGrid
 		$this->setColumnAttributes('dragAndDropHandle', array('class' => 'dragAndDropHandle'));
 
 		// our JS needs to know an id, so we can send the new order
-		$this->setRowAttributes(array('rel' => '[id]'));
+		$this->setRowAttributes(array('data-id' => '[id]'));
 	}
 
 
@@ -260,8 +260,8 @@ class BackendDataGrid extends SpoonDataGrid
 				// add class for confirmation
 				if(substr_count($value, '<a') > 0)
 				{
-					if(substr_count($value, 'class="') > 0)	$value = str_replace('class="', 'rel="'. $id .'" class="askConfirmation ', $value);
-					else $value = str_replace('<a ', '<a class="askConfirmation" ', $value);
+					if(substr_count($value, 'class="') > 0)	$value = str_replace('class="', 'data-message-id="'. $id .'" class="askConfirmation ', $value);
+					else $value = str_replace('<a ', '<a data-message-id="'. $id .'" class="askConfirmation" ', $value);
 				}
 
 				// is it a link?
@@ -443,7 +443,7 @@ class BackendDataGrid extends SpoonDataGrid
  * @package		backend
  * @subpackage	datagrid
  *
- * @author		Tijs Verkoyen <tijs@netlash.com>
+ * @author		Tijs Verkoyen <sumocoders.be>
  * @author		Davy Hellemans <davy@netlash.com>
  * @since		2.0
  */
@@ -671,7 +671,7 @@ class BackendDataGridDB extends BackendDataGrid
  * @package		backend
  * @subpackage	datagrid
  *
- * @author 		Tijs Verkoyen <tijs@netlash.com>
+ * @author 		Tijs Verkoyen <tijs@sumocoders.be>
  * @since		2.0
  */
 class BackendDataGridFunctions

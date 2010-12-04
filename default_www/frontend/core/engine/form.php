@@ -7,6 +7,7 @@
  * @subpackage	core
  *
  * @author 		Davy Hellemans <davy@netlash.com>
+ * @author 		Tijs Verkoyen <tijs@sumocoders.be>
  * @since		2.0
  */
 class FrontendForm extends SpoonForm
@@ -138,36 +139,37 @@ class FrontendForm extends SpoonForm
 		// @later	get prefered mask & first day
 		$mask = 'd/m/Y';
 		$firstday = 1;
+		$startDate = null;
+		$endDate = null;
 
-		// rebuild mask
-		$relMask = str_replace(array('d', 'm', 'Y', 'j', 'n'), array('dd', 'mm', 'yy', 'd', 'm'), $mask);
-
-		// build rel
-		$rel = $relMask .':::'. $firstday;
+		// build attributes
+		$attributes['data-mask'] = str_replace(array('d', 'm', 'Y', 'j', 'n'), array('dd', 'mm', 'yy', 'd', 'm'), $mask);
+		$attributes['data-firstday'] = $firstday;
 
 		// add extra classes based on type
 		switch($type)
 		{
 			case 'from':
-				$class .= ' inputDatefieldFrom';
+				$class .= ' inputDatefieldFrom inputText';
 				$classError .= ' inputDatefieldFrom';
-				$rel .= ':::'. date('Y-m-d', $date);
+				$attributes['data-startdate'] = date('Y-m-d', $date);
 			break;
 
 			case 'till':
-				$class .= ' inputDatefieldTill';
+				$class .= ' inputDatefieldTill inputText';
 				$classError .= ' inputDatefieldTill';
-				$rel .= ':::'. date('Y-m-d', $date);
+				$attributes['data-enddate'] = date('Y-m-d', $date);
 			break;
 
 			case 'range':
-				$class .= ' inputDatefieldRange';
+				$class .= ' inputDatefieldRange inputText';
 				$classError .= ' inputDatefieldRange';
-				$rel .= ':::'. date('Y-m-d', $date) .':::'. date('Y-m-d', $date2);
+				$attributes['data-startdate'] = date('Y-m-d', $date);
+				$attributes['data-enddate'] = date('Y-m-d', $date2);
 			break;
 
 			default:
-				$class .= ' inputDatefieldNormal';
+				$class .= ' inputDatefieldNormal inputText';
 				$classError .= ' inputDatefieldNormal';
 			break;
 		}
@@ -176,7 +178,7 @@ class FrontendForm extends SpoonForm
 		parent::addDate($name, $value, $mask, $class, $classError);
 
 		// set attributes
-		parent::getField($name)->setAttributes(array('rel' => $rel));
+		parent::getField($name)->setAttributes($attributes);
 
 		// fetch field
 		return parent::getField($name);
@@ -199,7 +201,7 @@ class FrontendForm extends SpoonForm
 		// redefine
 		$name = (string) $name;
 		$values = (array) $values;
-		$selected = ($selected !== null) ? (string) $selected : null;
+		$selected = ($selected !== null) ? $selected : null;
 		$multipleSelection = (bool) $multipleSelection;
 		$class = ($class !== null) ? (string) $class : 'select';
 		$classError = ($classError !== null) ? (string) $classError : 'selectError';
@@ -262,7 +264,7 @@ class FrontendForm extends SpoonForm
 	 * @return	void
 	 * @param	string $name					The name of the element.
 	 * @param	array $values					The values for the checkboxes.
-	 * @param	array[optional] $checked			Should the checkboxes be checked?
+	 * @param	array[optional] $checked		Should the checkboxes be checked?
 	 * @param	string[optional] $class			Class(es) that will be applied on the element.
 	 * @param	string[optional] $classError	Class(es) that will be applied on the element when an error occurs.
 	 */

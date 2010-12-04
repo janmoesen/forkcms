@@ -8,7 +8,7 @@
  * @subpackage	core
  *
  * @author 		Davy Hellemans <davy@netlash.com>
- * @author 		Tijs Verkoyen <tijs@netlash.com>
+ * @author 		Tijs Verkoyen <tijs@sumocoders.be>
  * @since		2.0
  */
 class BackendForm extends SpoonForm
@@ -147,12 +147,12 @@ class BackendForm extends SpoonForm
 		// @later	get prefered mask & first day
 		$mask = 'd/m/Y';
 		$firstday = 1;
+		$startDate = null;
+		$endDate = null;
 
-		// rebuild mask
-		$relMask = str_replace(array('d', 'm', 'Y', 'j', 'n'), array('dd', 'mm', 'yy', 'd', 'm'), $mask);
-
-		// build rel
-		$rel = $relMask .':::'. $firstday;
+		// build attributes
+		$attributes['data-mask'] = str_replace(array('d', 'm', 'Y', 'j', 'n'), array('dd', 'mm', 'yy', 'd', 'm'), $mask);
+		$attributes['data-firstday'] = $firstday;
 
 		// add extra classes based on type
 		switch($type)
@@ -160,19 +160,20 @@ class BackendForm extends SpoonForm
 			case 'from':
 				$class .= ' inputDatefieldFrom inputText';
 				$classError .= ' inputDatefieldFrom';
-				$rel .= ':::'. date('Y-m-d', $date);
+				$attributes['data-startdate'] =  date('Y-m-d', $date);
 			break;
 
 			case 'till':
 				$class .= ' inputDatefieldTill inputText';
 				$classError .= ' inputDatefieldTill';
-				$rel .= ':::'. date('Y-m-d', $date);
+				$attributes['data-enddate'] =  date('Y-m-d', $date);
 			break;
 
 			case 'range':
 				$class .= ' inputDatefieldRange inputText';
 				$classError .= ' inputDatefieldRange';
-				$rel .= ':::'. date('Y-m-d', $date) .':::'. date('Y-m-d', $date2);
+				$attributes['data-startdate'] =  date('Y-m-d', $date);
+				$attributes['data-enddate'] =  date('Y-m-d', $date2);
 			break;
 
 			default:
@@ -185,7 +186,7 @@ class BackendForm extends SpoonForm
 		parent::addDate($name, $value, $mask, $class, $classError);
 
 		// set attributes
-		parent::getField($name)->setAttributes(array('rel' => $rel));
+		parent::getField($name)->setAttributes($attributes);
 
 		// fetch field
 		return parent::getField($name);
@@ -454,7 +455,7 @@ class BackendForm extends SpoonForm
 	 * Parse the form
 	 *
 	 * @return	void
-	 * @param	SpoonTemplate $tpl	The template instance wherein the form will be parsed.
+	 * @param	BackendTemplate $tpl	The template instance wherein the form will be parsed.
 	 */
 	public function parse(SpoonTemplate $tpl)
 	{
