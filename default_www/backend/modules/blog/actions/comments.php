@@ -9,6 +9,7 @@
  * @subpackage	blog
  *
  * @author 		Davy Hellemans <davy@netlash.com>
+ * @author 		Tijs Verkoyen <tijs@sumocoders.be>
  * @since		2.0
  */
 class BackendBlogComments extends BackendBaseActionIndex
@@ -103,8 +104,8 @@ class BackendBlogComments extends BackendBaseActionIndex
 		// add mass action dropdown
 		$ddmMassAction = new SpoonFormDropdown('action', array('moderation' => BL::getLabel('MoveToModeration'), 'spam' => BL::getLabel('MoveToSpam'), 'delete' => BL::getLabel('Delete')), 'spam');
 		$ddmMassAction->setAttribute('id', 'actionPublished');
-		$ddmMassAction->setOptionAttributes('delete', array('rel' => 'confirmDelete'));
-		$ddmMassAction->setOptionAttributes('spam', array('rel' => 'confirmSpam'));
+		$ddmMassAction->setOptionAttributes('delete', array('data-message-id' => 'confirmDelete'));
+		$ddmMassAction->setOptionAttributes('spam', array('data-message-id' => 'confirmSpam'));
 		$this->dgPublished->setMassAction($ddmMassAction);
 
 		// datagrid for the comments that are awaiting moderation
@@ -141,8 +142,8 @@ class BackendBlogComments extends BackendBaseActionIndex
 		// add mass action dropdown
 		$ddmMassAction = new SpoonFormDropdown('action', array('published' => BL::getLabel('MoveToPublished'), 'spam' => BL::getLabel('MoveToSpam'), 'delete' => BL::getLabel('Delete')), 'published');
 		$ddmMassAction->setAttribute('id', 'actionModeration');
-		$ddmMassAction->setOptionAttributes('delete', array('rel' => 'confirmDelete'));
-		$ddmMassAction->setOptionAttributes('spam', array('rel' => 'confirmSpam'));
+		$ddmMassAction->setOptionAttributes('delete', array('data-message-id' => 'confirmDelete'));
+		$ddmMassAction->setOptionAttributes('spam', array('data-message-id' => 'confirmSpam'));
 		$this->dgModeration->setMassAction($ddmMassAction);
 
 		/*
@@ -180,8 +181,8 @@ class BackendBlogComments extends BackendBaseActionIndex
 		// add mass action dropdown
 		$ddmMassAction = new SpoonFormDropdown('action', array('published' => BL::getLabel('MoveToPublished'), 'moderation' => BL::getLabel('MoveToModeration'), 'delete' => BL::getLabel('Delete')), 'published');
 		$ddmMassAction->setAttribute('id', 'actionSpam');
-		$ddmMassAction->setOptionAttributes('delete', array('rel' => 'confirmDelete'));
-		$ddmMassAction->setOptionAttributes('spam', array('rel' => 'confirmSpam'));
+		$ddmMassAction->setOptionAttributes('delete', array('data-message-id' => 'confirmDelete'));
+		$ddmMassAction->setOptionAttributes('spam', array('data-message-id' => 'confirmSpam'));
 		$this->dgSpam->setMassAction($ddmMassAction);
 	}
 

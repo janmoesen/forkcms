@@ -6,7 +6,7 @@
 /**
  * Meta-handler
  *
- * @author Tijs Verkoyen <tijs@netlash.com>
+ * @author Tijs Verkoyen <tijs@sumocoders.be>
  */
 (function($)
 {
@@ -124,7 +124,7 @@
  * Inline editing
  *
  * @author Dave Lens <dave@netlash.com>
- * @author Tijs Verkoyen <tijs@netlash.com>
+ * @author Tijs Verkoyen <tijs@sumocoders.be>
  */
 (function($)
 {
@@ -186,9 +186,9 @@
 				options.current.value = element.html();
 
 				// grab extra params
-				if($(this).parent().attr('rel') != '')
+				if($(this).parent().data('id') != '')
 				{
-					options.current.extraParams = eval('(' + $(this).parent().attr('rel') + ')');
+					options.current.extraParams = eval('(' + $(this).parent().data('id') + ')');
 				}
 
 				// add class
@@ -263,10 +263,10 @@
 						url: options.saveUrl,
 						data: options.current.extraParams,
 						success: function(data, textStatus)
-							{
-								// destroy the element
-								destroyElement();
-							}
+						{
+							// destroy the element
+							destroyElement();
+						}
 					});
 				}
 
@@ -281,7 +281,7 @@
 /**
  * Tag-box
  *
- * @author Tijs Verkoyen <tijs@netlash.com>
+ * @author Tijs Verkoyen <tijs@sumocoders.be>
  */
 (function($)
 {
@@ -337,11 +337,22 @@
 			});
 
 			// build replace html
-			var html = '<div class="tagsWrapper">' + '	<div class="oneLiner">' + '		<p><input class="inputText dontSubmit" id="addValue-' + id + '" name="addValue-' + id + '" type="text" /></p>' + '		<div class="buttonHolder">' + '			<a href="#" id="addButton-' + id + '" class="button icon iconAdd disabledButton';
+			var html = 	'<div class="tagsWrapper">' + 
+						'	<div class="oneLiner">' + 
+						'		<p><input class="inputText dontSubmit" id="addValue-' + id + '" name="addValue-' + id + '" type="text" /></p>' + 
+						'		<div class="buttonHolder">' + 
+						'			<a href="#" id="addButton-' + id + '" class="button icon iconAdd disabledButton';
 
 			if(options.showIconOnly) html += ' iconOnly';
 
-			html += '">' + '				<span>' + options.addLabel + '</span>' + '			</a>' + '		</div>' + '	</div>' + '	<div id="elementList-' + id + '" class="tagList">' + '	</div>' + '</div>';
+			html += 	'">' + 
+						'				<span>' + options.addLabel + '</span>' + 
+						'			</a>' + 
+						'		</div>' + 
+						'	</div>' + 
+						'	<div id="elementList-' + id + '" class="tagList">' + 
+						'	</div>' + 
+						'</div>';
 
 			// hide current element
 			$(this).css('visibility', 'hidden').css('position', 'absolute').css('top', '-9000px').css('left', '-9000px').attr('tabindex', '-1');
@@ -448,7 +459,7 @@
 				evt.stopPropagation();
 
 				// remove element
-				remove($(this).attr('rel'));
+				remove($(this).data('id'));
 			});
 
 			// add an element
@@ -512,7 +523,9 @@
 					// loop elements
 					for( var i in elements)
 					{
-						html += '	<li><span><strong>' + elements[i] + '</strong>' + '		<a href="#" class="deleteButton-' + id + '" rel="' + elements[i] + '" title="' + options.removeLabel + '">' + options.removeLabel + '</a></span>' + '	</li>';
+						html += '	<li><span><strong>' + elements[i] + '</strong>' + 
+								'		<a href="#" class="deleteButton-' + id + '" data-id="' + elements[i] + '" title="' + options.removeLabel + '">' + options.removeLabel + '</a></span>' + 
+								'	</li>';
 					}
 
 					// end html
@@ -565,7 +578,7 @@
 /**
  * Multiple select box
  *
- * @author Tijs Verkoyen <tijs@netlash.com>
+ * @author Tijs Verkoyen <tijs@sumocoders.be>
  */
 (function($)
 {
@@ -660,7 +673,7 @@
 				evt.stopPropagation();
 
 				// remove element
-				remove($(this).attr('rel'));
+				remove($(this).data('id'));
 			});
 
 			// add an element
@@ -721,7 +734,7 @@
 						html += '	<li class="oneLiner">' + 
 								'		<p><span style="width: '+ $('#' + id).width() +'px">' + $('#' + id + ' option[value=' + elements[i] + ']').html() + '</span></p>' + 
 								'		<div class="buttonHolder">' + 
-								'			<a href="#" class="button icon iconDelete iconOnly deleteButton-' + id + '" rel="' + elements[i] + '" title="' + options.removeLabel + '"><span>' + options.removeLabel + '</span></a>' + 
+								'			<a href="#" class="button icon iconDelete iconOnly deleteButton-' + id + '" data-id="' + elements[i] + '" title="' + options.removeLabel + '"><span>' + options.removeLabel + '</span></a>' + 
 								'		</div>' + 
 								'	</li>';
 						
@@ -794,7 +807,7 @@
 /**
  * Multiple text box
  *
- * @author Tijs Verkoyen <tijs@netlash.com>
+ * @author Tijs Verkoyen <tijs@sumocoders.be>
  */
 (function($)
 {
@@ -941,7 +954,7 @@
 				evt.stopPropagation();
 
 				// remove element
-				remove($(this).attr('rel'));
+				remove($(this).data('id'));
 			});
 
 			// bind blur event on inputfields
@@ -1026,7 +1039,12 @@
 					// loop elements
 					for( var i in elements)
 					{
-						html += '	<li class="oneLiner">' + '		<p><input class="inputText dontSubmit inputField-' + id + '" name="inputField-' + id + '[]" type="text" value="' + elements[i] + '" /></p>' + '		<div class="buttonHolder">' + '			<a href="#" class="button icon iconDelete iconOnly deleteButton-' + id + '" rel="' + elements[i] + '" title="' + options.removeLabel + '"><span>' + options.removeLabel + '</span></a>' + '		</div>' + '	</li>';
+						html += '	<li class="oneLiner">' + 
+								'		<p><input class="inputText dontSubmit inputField-' + id + '" name="inputField-' + id + '[]" type="text" value="' + elements[i] + '" /></p>' + 
+								'		<div class="buttonHolder">' + 
+								'			<a href="#" class="button icon iconDelete iconOnly deleteButton-' + id + '" data-id="' + elements[i] + '" title="' + options.removeLabel + '"><span>' + options.removeLabel + '</span></a>' + 
+								'		</div>' + 
+								'	</li>';
 					}
 
 					// end html

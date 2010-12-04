@@ -143,7 +143,7 @@ jsFrontend.gravatar =
 		$('.replaceWithGravatar').each(function() 
 		{
 			var element = $(this);
-			var gravatarId = element.attr('rel');
+			var gravatarId = element.data('gravatar-id');
 			var size = element.attr('height');
 		
 			// valid gravatar id

@@ -9,7 +9,7 @@
  * @package		backend
  * @subpackage	pages
  *
- * @author 		Tijs Verkoyen <tijs@netlash.com>
+ * @author 		Tijs Verkoyen <tijs@sumocoders.be>
  * @author 		Davy Hellemans <davy@netlash.com>
  * @since		2.0
  */
@@ -441,7 +441,7 @@ class BackendPagesModel
 									<h4 class="templateBlockTitle">'. $title .'</h4>
 									<p><span class="helpTxt templateBlockCurrentType">&nbsp;</span></p>
 									<div class="buttonHolder">
-										<a href="#chooseExtra" class="button icon iconEdit iconOnly chooseExtra" rel="'. $index .'">
+										<a href="#chooseExtra" class="button icon iconEdit iconOnly chooseExtra" data-block-id="'. $index .'">
 											<span>'. ucfirst(BL::getLabel('Edit')) .'</span>
 										</a>
 									</div>

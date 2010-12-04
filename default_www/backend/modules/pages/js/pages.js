@@ -154,7 +154,7 @@ jsBackend.pages.extras =
 		evt.preventDefault();
 
 		// get the block wherefor we will change the extra
-		var blockId = $(this).attr('rel');
+		var blockId = $(this).data('block-id');
 
 		// get selected extra id
 		var selectedExtraId = $('#blockExtraId'+ blockId).val();

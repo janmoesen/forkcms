@@ -106,7 +106,7 @@
 						<label for="newPassword">{$lblPassword|ucfirst}</label>
 						{$txtNewPassword} {$txtNewPasswordError}
 					</p>
-					<table id="passwordStrengthMeter" class="passwordStrength" rel="newPassword" cellspacing="0">
+					<table id="passwordStrengthMeter" class="passwordStrength" data-id="newPassword" cellspacing="0">
 						<tr>
 							<td class="strength" id="passwordStrength">
 								<p class="strength none">/</p>

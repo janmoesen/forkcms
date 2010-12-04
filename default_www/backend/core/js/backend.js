@@ -92,7 +92,7 @@ jsBackend.balloons =
 	init: function() {
 		$('.balloon:visible').each(function() {
 			// search linked element
-			var linkedElement = $('*[rel='+ $(this).attr('id') +']');
+			var linkedElement = $('*[data-message-id='+ $(this).attr('id') +']');
 
 			// linked item found?
 			if(linkedElement != null)
@@ -110,16 +110,16 @@ jsBackend.balloons =
 		var clickedElement = $(this);
 
 		// get linked balloon
-		var rel = clickedElement.attr('rel');
+		var id = clickedElement.data('message-id');
 
 		// rel available?
-		if(rel != '')
+		if(id != '')
 		{
 			// hide if already visible
-			if($('#'+ rel).is(':visible'))
+			if($('#'+ id).is(':visible'))
 			{
 				// hide
-				$('#'+ rel).fadeOut(500);
+				$('#'+ id).fadeOut(500);
 
 				// unbind
 				$(window).unbind('resize');
@@ -129,16 +129,16 @@ jsBackend.balloons =
 			else
 			{
 				// position
-				jsBackend.balloons.position(clickedElement, $('#'+ rel));
+				jsBackend.balloons.position(clickedElement, $('#'+ id));
 
 				// show
-				$('#'+ rel).fadeIn(500);
+				$('#'+ id).fadeIn(500);
 
 				// set focus on first visible field
-				if($('#'+ rel +' form input:visible:first').length > 0) $('#'+ rel +' form input:visible:first').focus();
+				if($('#'+ id +' form input:visible:first').length > 0) $('#'+ id +' form input:visible:first').focus();
 
 				// bind resize
-				$(window).resize(function() { jsBackend.balloons.position(clickedElement, $('#'+ rel)); });
+				$(window).resize(function() { jsBackend.balloons.position(clickedElement, $('#'+ id)); });
 			}
 		}
 	},
@@ -212,7 +212,7 @@ jsBackend.controls = {
 		$('.askConfirmation').each(function()
 		{
 			// get id
-			var id = $(this).attr('rel');
+			var id = $(this).data('message-id');
 			var url = $(this).attr('href');
 
 			if(id != '' && url != '')
@@ -230,12 +230,12 @@ jsBackend.controls = {
 								$(this).dialog('close');
 
 								// goto link
-								window.location = $(this).attr('rel');
+								window.location = url;
 							},
 						'{$lblCancel|ucfirst}': function()
-							{
+						{
 								$(this).dialog('close');
-							}
+						}
 					},
 					open: function(evt)
 					{
@@ -253,13 +253,13 @@ jsBackend.controls = {
 			evt.preventDefault();
 
 			// get id
-			var id = $(this).attr('rel');
+			var id = $(this).data('message-id');
 			
 			// bind
 			if(id != '')
 			{
 				// set target
-				$('#'+ id).attr('rel', $(this).attr('href'));
+				$('#'+ id).data('message-id', $(this).attr('href'));
 				
 				// open dialog
 				$('#'+ id).dialog('open');
@@ -396,34 +396,37 @@ jsBackend.controls = {
 		$('.tableOptions .massAction option').each(function()
 		{
 			// get id
-			var id = $(this).attr('rel');
+			var id = $(this).data('message-id');
 
-			// initialize
-			$('#'+ id).dialog({
-				autoOpen: false,
-				draggable: false,
-				resizable: false,
-				modal: true,
-				buttons: {
-					'{$lblOK|ucfirst}': function()
-					{
-						// close dialog
-						$(this).dialog('close');
+			if(typeof id != 'undefined')
+			{
+				// initialize
+				$('#'+ id).dialog({
+					autoOpen: false,
+					draggable: false,
+					resizable: false,
+					modal: true,
+					buttons: {
+						'{$lblOK|ucfirst}': function()
+						{
+							// close dialog
+							$(this).dialog('close');
 
-						// submit the form
-						$($('*[rel='+ $(this).attr('id') +']').parents('form')).submit();
+							// submit the form
+							$($('*[data-message-id='+ $(this).attr('id') +']').parents('form')).submit();
+						},
+						'{$lblCancel|ucfirst}': function()
+						{
+							$(this).dialog('close');
+						}
 					},
-					'{$lblCancel|ucfirst}': function()
+					open: function(evt)
 					{
-						$(this).dialog('close');
+						// set focus on first button
+						if($(this).next().find('button').length > 0) { $(this).next().find('button')[0].focus(); }
 					}
-				},
-				open: function(evt)
-				{
-					// set focus on first button
-					if($(this).next().find('button').length > 0) { $(this).next().find('button')[0].focus(); }
-				}
-			});
+				});
+			}
 		});
 
 		// hijack the form
@@ -442,10 +445,10 @@ jsBackend.controls = {
 					var element = $(this).parents('.massAction').find('select[name=action] option:selected');
 	
 					// if the rel-attribute exists we should show the dialog
-					if(typeof element.attr('rel') != 'undefined')
+					if(typeof element.data('message-id') != 'undefined')
 					{
 						// get id
-						var id = element.attr('rel');
+						var id = element.data('message-id');
 	
 						// open dialog
 						$('#'+ id).dialog('open');
@@ -498,7 +501,7 @@ jsBackend.controls = {
 			$('.passwordStrength').each(function()
 			{
 				// grab id
-				var id = $(this).attr('rel');
+				var id = $(this).data('id');
 				var wrapperId = $(this).attr('id');
 
 				// hide all
@@ -711,7 +714,7 @@ jsBackend.forms =
 	init: function()
 	{
 		jsBackend.forms.placeholders();	// make sure this is done before focussing the first field
-		//jsBackend.forms.focusFirstField();
+		jsBackend.forms.focusFirstField();
 		jsBackend.forms.datefields();
 		jsBackend.forms.submitWithLinks();
 		jsBackend.forms.tagBoxes();
@@ -725,14 +728,15 @@ jsBackend.forms =
 		{
 			$('.inputDatefieldNormal').each(function()
 			{
-				var data = $(this).attr('rel').split(':::');
+				// get data
+				var data = $(this).data();
 
 				$(this).datepicker({
-					dateFormat: data[0],
+					dateFormat: data.mask,
 					dayNames: ['{$locDayLongSun}', '{$locDayLongMon}', '{$locDayLongTue}', '{$locDayLongWed}', '{$locDayLongThu}', '{$locDayLongFri}', '{$locDayLongSat}'],
 					dayNamesMin: ['{$locDayShortSun}', '{$locDayShortMon}', '{$locDayShortTue}', '{$locDayShortWed}', '{$locDayShortThu}', '{$locDayShortFri}', '{$locDayShortSat}'],
 					dayNamesShort: ['{$locDayShortSun}', '{$locDayShortMon}', '{$locDayShortTue}', '{$locDayShortWed}', '{$locDayShortThu}', '{$locDayShortFri}', '{$locDayShortSat}'],
-					firstDay: data[1],
+					firstDay: data.firstday,
 					hideIfNoPrevNext: true,
 					monthNames: ['{$locMonthLong1}', '{$locMonthLong2}', '{$locMonthLong3}', '{$locMonthLong4}', '{$locMonthLong5}', '{$locMonthLong6}', '{$locMonthLong7}', '{$locMonthLong8}', '{$locMonthLong9}', '{$locMonthLong10}', '{$locMonthLong11}', '{$locMonthLong12}'],
 					monthNamesShort: ['{$locMonthShort1}', '{$locMonthShort2}', '{$locMonthShort3}', '{$locMonthShort4}', '{$locMonthShort5}', '{$locMonthShort6}', '{$locMonthShort7}', '{$locMonthShort8}', '{$locMonthShort9}', '{$locMonthShort10}', '{$locMonthShort11}', '{$locMonthShort12}'],
@@ -748,20 +752,21 @@ jsBackend.forms =
 		{
 			$('.inputDatefieldFrom').each(function()
 			{
-				var data = $(this).attr('rel').split(':::');
+				// get data
+				var data = $(this).data();
 
 				$(this).datepicker({
-					dateFormat: data[0],
+					dateFormat: data.mask,
 					dayNames: ['{$locDayLongSun}', '{$locDayLongMon}', '{$locDayLongTue}', '{$locDayLongWed}', '{$locDayLongThu}', '{$locDayLongFri}', '{$locDayLongSat}'],
 					dayNamesMin: ['{$locDayShortSun}', '{$locDayShortMon}', '{$locDayShortTue}', '{$locDayShortWed}', '{$locDayShortThu}', '{$locDayShortFri}', '{$locDayShortSat}'],
 					dayNamesShort: ['{$locDayShortSun}', '{$locDayShortMon}', '{$locDayShortTue}', '{$locDayShortWed}', '{$locDayShortThu}', '{$locDayShortFri}', '{$locDayShortSat}'],
-					firstDay: data[1],
+					firstDay: data.firstday,
 					hideIfNoPrevNext: true,
 					monthNames: ['{$locMonthLong1}', '{$locMonthLong2}', '{$locMonthLong3}', '{$locMonthLong4}', '{$locMonthLong5}', '{$locMonthLong6}', '{$locMonthLong7}', '{$locMonthLong8}', '{$locMonthLong9}', '{$locMonthLong10}', '{$locMonthLong11}', '{$locMonthLong12}'],
 					monthNamesShort: ['{$locMonthShort1}', '{$locMonthShort2}', '{$locMonthShort3}', '{$locMonthShort4}', '{$locMonthShort5}', '{$locMonthShort6}', '{$locMonthShort7}', '{$locMonthShort8}', '{$locMonthShort9}', '{$locMonthShort10}', '{$locMonthShort11}', '{$locMonthShort12}'],
 					nextText: '{$lblNext}',
 					prevText: '{$lblPrevious}',
-					minDate: new Date(parseInt(data[2].split('-')[0], 10), parseInt(data[2].split('-')[1], 10) - 1, parseInt(data[2].split('-')[2], 10)),
+					minDate: new Date(parseInt(data.startdate.split('-')[0], 10), parseInt(data.startdate.split('-')[1], 10) - 1, parseInt(data.startdate.split('-')[2], 10)),
 					showAnim: 'slideDown'
 				});
 			});
@@ -772,20 +777,21 @@ jsBackend.forms =
 		{
 			$('.inputDatefieldTill').each(function()
 			{
-				var data = $(this).attr('rel').split(':::');
+				// get data
+				var data = $(this).data();
 
 				$(this).datepicker({
-					dateFormat: data[0],
+					dateFormat: data.mask,
 					dayNames: ['{$locDayLongSun}', '{$locDayLongMon}', '{$locDayLongTue}', '{$locDayLongWed}', '{$locDayLongThu}', '{$locDayLongFri}', '{$locDayLongSat}'],
 					dayNamesMin: ['{$locDayShortSun}', '{$locDayShortMon}', '{$locDayShortTue}', '{$locDayShortWed}', '{$locDayShortThu}', '{$locDayShortFri}', '{$locDayShortSat}'],
 					dayNamesShort: ['{$locDayShortSun}', '{$locDayShortMon}', '{$locDayShortTue}', '{$locDayShortWed}', '{$locDayShortThu}', '{$locDayShortFri}', '{$locDayShortSat}'],
-					firstDay: data[1],
+					firstDay: data.firstday,
 					hideIfNoPrevNext: true,
 					monthNames: ['{$locMonthLong1}', '{$locMonthLong2}', '{$locMonthLong3}', '{$locMonthLong4}', '{$locMonthLong5}', '{$locMonthLong6}', '{$locMonthLong7}', '{$locMonthLong8}', '{$locMonthLong9}', '{$locMonthLong10}', '{$locMonthLong11}', '{$locMonthLong12}'],
 					monthNamesShort: ['{$locMonthShort1}', '{$locMonthShort2}', '{$locMonthShort3}', '{$locMonthShort4}', '{$locMonthShort5}', '{$locMonthShort6}', '{$locMonthShort7}', '{$locMonthShort8}', '{$locMonthShort9}', '{$locMonthShort10}', '{$locMonthShort11}', '{$locMonthShort12}'],
 					nextText: '{$lblNext}',
 					prevText: '{$lblPrevious}',
-					maxDate: new Date(parseInt(data[2].split('-')[0], 10), parseInt(data[2].split('-')[1], 10) -1, parseInt(data[2].split('-')[2], 10)),
+					maxDate: new Date(parseInt(data.enddate.split('-')[0], 10), parseInt(data.enddate.split('-')[1], 10) -1, parseInt(data.enddate.split('-')[2], 10)),
 					showAnim: 'slideDown'
 				});
 			});
@@ -796,21 +802,22 @@ jsBackend.forms =
 		{
 			$('.inputDatefieldRange').each(function()
 			{
-				var data = $(this).attr('rel').split(':::');
+				// get data
+				var data = $(this).data();
 
 				$(this).datepicker({
-					dateFormat: data[0],
+					dateFormat: data.mask,
 					dayNames: ['{$locDayLongSun}', '{$locDayLongMon}', '{$locDayLongTue}', '{$locDayLongWed}', '{$locDayLongThu}', '{$locDayLongFri}', '{$locDayLongSat}'],
 					dayNamesMin: ['{$locDayShortSun}', '{$locDayShortMon}', '{$locDayShortTue}', '{$locDayShortWed}', '{$locDayShortThu}', '{$locDayShortFri}', '{$locDayShortSat}'],
 					dayNamesShort: ['{$locDayShortSun}', '{$locDayShortMon}', '{$locDayShortTue}', '{$locDayShortWed}', '{$locDayShortThu}', '{$locDayShortFri}', '{$locDayShortSat}'],
-					firstDay: data[1],
+					firstDay: data.firstday,
 					hideIfNoPrevNext: true,
 					monthNames: ['{$locMonthLong1}', '{$locMonthLong2}', '{$locMonthLong3}', '{$locMonthLong4}', '{$locMonthLong5}', '{$locMonthLong6}', '{$locMonthLong7}', '{$locMonthLong8}', '{$locMonthLong9}', '{$locMonthLong10}', '{$locMonthLong11}', '{$locMonthLong12}'],
 					monthNamesShort: ['{$locMonthShort1}', '{$locMonthShort2}', '{$locMonthShort3}', '{$locMonthShort4}', '{$locMonthShort5}', '{$locMonthShort6}', '{$locMonthShort7}', '{$locMonthShort8}', '{$locMonthShort9}', '{$locMonthShort10}', '{$locMonthShort11}', '{$locMonthShort12}'],
 					nextText: '{$lblNext}',
 					prevText: '{$lblPrevious}',
-					minDate: new Date(parseInt(data[2].split('-')[0], 10), parseInt(data[2].split('-')[1], 10) - 1, parseInt(data[2].split('-')[2], 10), 0, 0, 0, 0),
-					maxDate: new Date(parseInt(data[3].split('-')[0], 10), parseInt(data[3].split('-')[1], 10) - 1, parseInt(data[3].split('-')[2], 10), 23, 59, 59),
+					minDate: new Date(parseInt(data.startdate.split('-')[0], 10), parseInt(data.startdate.split('-')[1], 10) - 1, parseInt(data.startdate.split('-')[2], 10), 0, 0, 0, 0),
+					maxDate: new Date(parseInt(data.enddate.split('-')[0], 10), parseInt(data.enddate.split('-')[1], 10) - 1, parseInt(data.enddate.split('-')[2], 10), 23, 59, 59),
 					showAnim: 'slideDown'
 				});
 			});
@@ -1337,13 +1344,10 @@ jsBackend.tableSequenceByDragAndDrop =
 					var newIdSequence = new Array();
 
 					// loop rowIds
-					rows.each(function() { newIdSequence.push($(this).attr('rel')); });
+					rows.each(function() { newIdSequence.push($(this).data('id')); });
 
 					// make the call
-					$.ajax({
-						cache: false,
-						type: 'POST',
-						dataType: 'json',
+					$.ajax({ 
 						url: url,
 						data: 'new_id_sequence=' + newIdSequence.join(','),
 						success: function(data, textStatus)
@@ -1365,9 +1369,9 @@ jsBackend.tableSequenceByDragAndDrop =
 
 							// alert the user
 							if(data.code != 200 && jsBackend.debug) { alert(data.message); }
+							
 							// show message
 							jsBackend.messages.add('success', 'Changed order successfully.');
-
 						},
 						error: function(XMLHttpRequest, textStatus, errorThrown)
 						{
