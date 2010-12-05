@@ -185,7 +185,7 @@ class FrontendMailer
 
 		// create new SpoonEmail-instance
 		$email = new SpoonEmail();
-		$email->setTemplateCompileDirectory(FRONTEND_CACHE_PATH .'/templates');
+		$email->setTemplateCompileDirectory(FRONTEND_CACHE_PATH .'/compiled_templates');
 
 		// send via SMTP
 		if($mailerType == 'smtp')

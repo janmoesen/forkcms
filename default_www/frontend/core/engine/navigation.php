@@ -332,7 +332,7 @@ class FrontendNavigation extends FrontendBaseObject
 		// create template
 		$tpl = new SpoonTemplate();
 		$tpl->setForceCompile(SPOON_DEBUG);
-		$tpl->setCompileDirectory(FRONTEND_CACHE_PATH .'/templates');
+		$tpl->setCompileDirectory(FRONTEND_CACHE_PATH .'/compiled_templates');
 
 		// assign navigation to template
 		$tpl->assign('navigation', $navigation[$type][$parentId]);

@@ -35,7 +35,7 @@ class FrontendTemplate extends SpoonTemplate
 		$this->setCacheDirectory(FRONTEND_CACHE_PATH .'/cached_templates');
 
 		// set compile directory
-		$this->setCompileDirectory(FRONTEND_CACHE_PATH .'/templates');
+		$this->setCompileDirectory(FRONTEND_CACHE_PATH .'/compiled_templates');
 
 		// when debugging the template should be recompiled every time
 		$this->setForceCompile(SPOON_DEBUG);

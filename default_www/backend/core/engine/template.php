@@ -47,7 +47,7 @@ class BackendTemplate extends SpoonTemplate
 		$this->setCacheDirectory(BACKEND_CACHE_PATH .'/cached_templates');
 
 		// set compile directory
-		$this->setCompileDirectory(BACKEND_CACHE_PATH .'/templates');
+		$this->setCompileDirectory(BACKEND_CACHE_PATH .'/compiled_templates');
 
 		// when debugging the template should be recompiled every time
 		$this->setForceCompile(SPOON_DEBUG);
