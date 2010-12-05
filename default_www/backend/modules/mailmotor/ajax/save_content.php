@@ -135,7 +135,7 @@ class BackendMailmotorAjaxSaveContent extends BackendBaseAJAXAction
 		if(!isset($template['content'])) $this->output(self::ERROR, array('mailing_id' => $this->mailing['id'], 'error' => true), BL::getError('TemplateDoesNotExist', 'mailmotor'));
 
 		// remove TinyMCE
-		$fullContentHTML = preg_replace('/<!-- tinymce  -->.*?<!-- \/tinymce  -->/is', $contentHTML, $fullContentHTML);
+		$fullContentHTML = preg_replace('/<!-- tinymce -->.*?<!-- \/tinymce  -->/is', $contentHTML, $fullContentHTML);
 
 		// add Google UTM parameters to all anchors
 		$fullContentHTML = $this->addUTMParameters($fullContentHTML);
