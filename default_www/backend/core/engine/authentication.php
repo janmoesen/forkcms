@@ -145,7 +145,7 @@ class BackendAuthentication
 			// get active modules
 			$activeModules = (array) $db->getColumn('SELECT m.name
 														FROM modules AS m
-														WHERE m.active = ?;', 'Y');
+														WHERE m.active = ?', 'Y');
 
 			// add always allowed
 			foreach($alwaysAllowed as $allowedModule => $actions) $activeModules[] = $allowedModule;
@@ -155,7 +155,7 @@ class BackendAuthentication
 															FROM users_sessions AS us
 															INNER JOIN users AS u ON us.user_id = u.id
 															INNER JOIN groups_rights_actions AS gra ON u.group_id = gra.group_id
-															WHERE us.session_id = ? AND us.secret_key = ?;',
+															WHERE us.session_id = ? AND us.secret_key = ?',
 															array(SpoonSession::getSessionId(), SpoonSession::get('backend_secret_key')));
 
 			// add all actions and there level
@@ -209,7 +209,7 @@ class BackendAuthentication
 												FROM users_sessions AS us
 												INNER JOIN users AS u ON us.user_id = u.id
 												INNER JOIN groups_rights_modules AS grm ON u.group_id = grm.group_id
-												WHERE us.session_id = ? AND us.secret_key = ?;',
+												WHERE us.session_id = ? AND us.secret_key = ?',
 												array(SpoonSession::getSessionId(), SpoonSession::get('backend_secret_key')));
 
 			// add all modules
@@ -241,7 +241,7 @@ class BackendAuthentication
 			$sessionData = $db->getRecord('SELECT us.id, us.user_id
 											FROM users_sessions AS us
 											WHERE us.session_id = ? AND us.secret_key = ?
-											LIMIT 1;',
+											LIMIT 1',
 											array(SpoonSession::getSessionId(), SpoonSession::get('backend_secret_key')));
 
 			// if we found a matching row, we know the user is logged in, so we update his session
@@ -320,7 +320,7 @@ class BackendAuthentication
 		$userId = (int) $db->getVar('SELECT u.id
 										FROM users AS u
 										WHERE u.email = ? AND u.password = ? AND u.active = ? AND u.deleted = ?
-										LIMIT 1;',
+										LIMIT 1',
 										array($login, $passwordEncrypted, 'Y', 'N'));
 
 		// not 0, a valid user!

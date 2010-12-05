@@ -155,7 +155,7 @@ class FrontendMailer
 		// return the ids
 		return (array) FrontendModel::getDB()->getColumn('SELECT e.id
 															FROM emails AS e
-															WHERE e.send_on < ?;',
+															WHERE e.send_on < ?',
 															array(FrontendModel::getUTCDate()));
 	}
 
@@ -177,7 +177,7 @@ class FrontendMailer
 		// get record
 		$emailRecord = (array) $db->getRecord('SELECT *
 												FROM emails AS e
-												WHERE e.id = ?;',
+												WHERE e.id = ?',
 												array($id));
 
 		// mailer type

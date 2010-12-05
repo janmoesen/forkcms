@@ -213,7 +213,7 @@ class PagesInstall extends ModuleInstaller
 		}
 
 		// recalculate num_blocks
-		$this->setSetting('pages', 'template_max_blocks', (int) $this->getDB()->getVar('SELECT MAX(num_blocks) FROM pages_templates;'), true);
+		$this->setSetting('pages', 'template_max_blocks', (int) $this->getDB()->getVar('SELECT MAX(num_blocks) FROM pages_templates'), true);
 		$this->setSetting('pages', 'meta_navigation', false);
 	}
 
@@ -393,7 +393,7 @@ class PagesInstall extends ModuleInstaller
 		}
 
 		// reset blocks
-		$this->setSetting('pages', 'template_max_blocks', (int) $this->getDB()->getVar('SELECT MAX(num_blocks) FROM pages_templates;'), true);
+		$this->setSetting('pages', 'template_max_blocks', (int) $this->getDB()->getVar('SELECT MAX(num_blocks) FROM pages_templates'), true);
 	}
 
 
@@ -433,7 +433,7 @@ class PagesInstall extends ModuleInstaller
 	private function setSettings()
 	{
 		// general settings
-		$this->setSetting('pages', 'template_max_blocks', (int) $this->getDB()->getVar('SELECT MAX(num_blocks) FROM pages_templates;'));
+		$this->setSetting('pages', 'template_max_blocks', (int) $this->getDB()->getVar('SELECT MAX(num_blocks) FROM pages_templates'));
 		$this->setSetting('pages', 'meta_navigation', true);
 		$this->setSetting('pages', 'default_template', 1);
 	}

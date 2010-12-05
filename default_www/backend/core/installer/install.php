@@ -73,7 +73,7 @@ class ModuleInstaller
 		$name = (string) $name;
 
 		// module does not yet exists
-		if(!(bool) $this->getDB()->getVar('SELECT COUNT(name) FROM modules WHERE name = ?;', $name))
+		if(!(bool) $this->getDB()->getVar('SELECT COUNT(name) FROM modules WHERE name = ?', $name))
 		{
 			// build item
 			$item = array('name' => $name,
@@ -566,7 +566,7 @@ class ModuleInstaller
 		// doens't already exist
 		if(!(bool) $this->getDB()->getVar('SELECT COUNT(name)
 											FROM modules_settings
-											WHERE module = ? AND name = ?;',
+											WHERE module = ? AND name = ?',
 											array($module, $name)))
 		{
 			// build item

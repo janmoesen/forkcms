@@ -92,7 +92,7 @@ class BackendAnalyticsModel
 
 		// delete tags
 		BackendModel::getDB(true)->execute('DELETE FROM analytics_landing_pages
-											WHERE id IN ('. implode(',', $ids) .');');
+											WHERE id IN ('. implode(',', $ids) .')');
 	}
 
 
@@ -107,7 +107,7 @@ class BackendAnalyticsModel
 		// exists?
 		return BackendModel::getDB()->getNumRows('SELECT id
 													FROM analytics_landing_pages
-													WHERE id = ?;',
+													WHERE id = ?',
 													array((int) $id));
 	}
 
@@ -390,11 +390,11 @@ class BackendAnalyticsModel
 		// get data from database
 		if($limit === null) $items = (array) $db->getRecords('SELECT *, UNIX_TIMESTAMP(updated_on) AS updated_on
 																		FROM analytics_landing_pages
-																		ORDER BY entrances DESC;');
+																		ORDER BY entrances DESC');
 		else $items = (array) $db->getRecords('SELECT *, UNIX_TIMESTAMP(updated_on) AS updated_on
 															FROM analytics_landing_pages
 															ORDER BY entrances DESC
-															LIMIT ?;',
+															LIMIT ?',
 															array((int) $limit));
 
 		// loop items
@@ -522,7 +522,7 @@ class BackendAnalyticsModel
 	 */
 	public static function getPageByPath($path)
 	{
-		return (array) BackendModel::getDB()->getRecord('SELECT * FROM analytics_pages WHERE page = ?;', array((string) $path));
+		return (array) BackendModel::getDB()->getRecord('SELECT * FROM analytics_pages WHERE page = ?', array((string) $path));
 	}
 
 
@@ -535,7 +535,7 @@ class BackendAnalyticsModel
 	public static function getPageForId($pageId)
 	{
 		// get the page for the given id
-		return (string) BackendModel::getDB()->getVar('SELECT page FROM analytics_pages WHERE id = ?;', array((int) $pageId));
+		return (string) BackendModel::getDB()->getVar('SELECT page FROM analytics_pages WHERE id = ?', array((int) $pageId));
 	}
 
 
@@ -592,7 +592,7 @@ class BackendAnalyticsModel
 	 */
 	public static function getRecentKeywords()
 	{
-		return (array) BackendModel::getDB()->getRecords('SELECT * FROM analytics_keywords ORDER BY entrances DESC, id;');
+		return (array) BackendModel::getDB()->getRecords('SELECT * FROM analytics_keywords ORDER BY entrances DESC, id');
 	}
 
 
@@ -603,7 +603,7 @@ class BackendAnalyticsModel
 	 */
 	public static function getRecentReferrers()
 	{
-		return (array) BackendModel::getDB()->getRecords('SELECT * FROM analytics_referrers ORDER BY entrances DESC, id;');
+		return (array) BackendModel::getDB()->getRecords('SELECT * FROM analytics_referrers ORDER BY entrances DESC, id');
 	}
 
 
@@ -653,7 +653,7 @@ class BackendAnalyticsModel
 		$db = BackendModel::getDB();
 
 		// get id for this page
-		$id = (int) $db->getVar('SELECT id FROM analytics_pages WHERE page = ?;', array((string) $page));
+		$id = (int) $db->getVar('SELECT id FROM analytics_pages WHERE page = ?', array((string) $page));
 
 		// no id? insert this page
 		if($id === 0) $id = $db->insert('analytics_pages', array('page' => (string) $page));
@@ -1420,7 +1420,7 @@ class BackendAnalyticsHelper
 	public static function getDataForPage($pageId, $startTimestamp, $endTimestamp)
 	{
 		// get page
-		$page = BackendModel::getDB()->getVar('SELECT page FROM analytics_pages WHERE id = ?;', array((int) $pageId));
+		$page = BackendModel::getDB()->getVar('SELECT page FROM analytics_pages WHERE id = ?', array((int) $pageId));
 
 		// init vars
 		$data = array();
