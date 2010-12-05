@@ -85,7 +85,7 @@ class UsersInstall extends ModuleInstaller
 		// no god user already exists
 		if((int) $this->getDB()->getVar('SELECT COUNT(id)
 										FROM users
-										WHERE is_god = ? AND deleted = ? AND active = ?;',
+										WHERE is_god = ? AND deleted = ? AND active = ?',
 										array('Y', 'N', 'Y')) == 0)
 		{
 			// secret files

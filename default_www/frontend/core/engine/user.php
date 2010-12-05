@@ -142,7 +142,7 @@ class FrontendUser
 		$userData = (array) $db->getRecord('SELECT u.id, u.email
 											FROM users AS u
 											WHERE u.id = ?
-											LIMIT 1;',
+											LIMIT 1',
 											array($userId));
 
 		// if there is no data we have to destroy this object, I know this isn't a realistic situation
@@ -155,7 +155,7 @@ class FrontendUser
 		// get settings
 		$settings = (array) $db->getPairs('SELECT us.name, us.value
 											FROM users_settings AS us
-											WHERE us.user_id = ?;',
+											WHERE us.user_id = ?',
 											array($userId));
 
 		// loop settings and store them in the object

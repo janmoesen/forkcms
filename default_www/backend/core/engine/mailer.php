@@ -128,7 +128,7 @@ class BackendMailer
 		// return the ids
 		return (array) BackendModel::getDB()->getColumn('SELECT e.id
 															FROM emails AS e
-															WHERE e.send_on < ?;',
+															WHERE e.send_on < ?',
 															array(BackendModel::getUTCDate()));
 	}
 
@@ -150,7 +150,7 @@ class BackendMailer
 		// get record
 		$emailRecord = (array) $db->getRecord('SELECT *
 												FROM emails AS e
-												WHERE e.id = ?;',
+												WHERE e.id = ?',
 												array($id));
 
 		// mailer type

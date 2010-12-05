@@ -106,8 +106,8 @@ class InstallerStep3 extends InstallerStep
 					$table = 'test'. time();
 
 					// attempt to create table
-					$db->execute('DROP TABLE IF EXISTS '. $table .';');
-					$db->execute('CREATE TABLE '. $table .' (id int(11) NOT NULL) ENGINE=MyISAM;');
+					$db->execute('DROP TABLE IF EXISTS '. $table);
+					$db->execute('CREATE TABLE '. $table .' (id int(11) NOT NULL) ENGINE=MyISAM');
 
 					// drop table
 					$db->drop($table);

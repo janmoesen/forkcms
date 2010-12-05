@@ -50,7 +50,7 @@ class FrontendLanguage
 		$locale = (array) $db->getRecords('SELECT type, module, name, value
 											FROM locale
 											WHERE language = ? AND application = ?
-											ORDER BY type ASC, name ASC, module ASC;',
+											ORDER BY type ASC, name ASC, module ASC',
 											array((string) $language, (string) $application));
 
 		// start generating PHP

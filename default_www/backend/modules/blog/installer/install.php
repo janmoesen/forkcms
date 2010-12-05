@@ -234,7 +234,7 @@ class BlogInstall extends ModuleInstaller
 	 */
 	private function existsCategory($language, $id)
 	{
-		return (bool) ($this->getDB()->getVar('SELECT COUNT(id) FROM blog_categories WHERE id = ? AND language = ?;', array((int) $id, (string) $language)) > 0);
+		return (bool) ($this->getDB()->getVar('SELECT COUNT(id) FROM blog_categories WHERE id = ? AND language = ?', array((int) $id, (string) $language)) > 0);
 	}
 
 
@@ -246,7 +246,7 @@ class BlogInstall extends ModuleInstaller
 	 */
 	private function getCategory($language)
 	{
-		return (int) $this->getDB()->getVar('SELECT id FROM blog_categories WHERE language = ?;', (string) $language);
+		return (int) $this->getDB()->getVar('SELECT id FROM blog_categories WHERE language = ?', (string) $language);
 	}
 
 
