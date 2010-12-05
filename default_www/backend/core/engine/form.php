@@ -160,20 +160,20 @@ class BackendForm extends SpoonForm
 			case 'from':
 				$class .= ' inputDatefieldFrom inputText';
 				$classError .= ' inputDatefieldFrom';
-				$attributes['data-startdate'] =  date('Y-m-d', $date);
+				$attributes['data-startdate'] = date('Y-m-d', $date);
 			break;
 
 			case 'till':
 				$class .= ' inputDatefieldTill inputText';
 				$classError .= ' inputDatefieldTill';
-				$attributes['data-enddate'] =  date('Y-m-d', $date);
+				$attributes['data-enddate'] = date('Y-m-d', $date);
 			break;
 
 			case 'range':
 				$class .= ' inputDatefieldRange inputText';
 				$classError .= ' inputDatefieldRange';
-				$attributes['data-startdate'] =  date('Y-m-d', $date);
-				$attributes['data-enddate'] =  date('Y-m-d', $date2);
+				$attributes['data-startdate'] = date('Y-m-d', $date);
+				$attributes['data-enddate'] = date('Y-m-d', $date2);
 			break;
 
 			default:
