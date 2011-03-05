@@ -13,7 +13,7 @@
 type -P phpcs &>/dev/null || { echo "PHP CodeSniffer is not installed, run 'pear install PHP_CodeSniffer'." >&2; exit 1; }
 
 # determine the relevant directories
-base_dir="$(dirname "$0")/..";
+base_dir="$(php -r 'echo realpath($_SERVER["argv"][1]);' "$(dirname "$0")/..")";
 
 # run it
-phpcs -v --standard="$base_dir/tools/codesniffer/Fork" --ignore="$base_dir"/default_www/backend/core/js/tiny_mce,"$base_dir"/default_www/frontend/cache,"$base_dir"/default_www/backend/cache,"$base_dir"/default_www/install/cache,"$base_dir"/default_www/docs,"$base_dir/tools","$base_dir"/library/external --extensions=php --report=full "${@:-$base_dir}"
+phpcs -v --standard="$base_dir/tools/codesniffer/Fork" --ignore="$base_dir"/default_www/backend/core/js/tiny_mce,"$base_dir"/default_www/frontend/cache,"$base_dir"/default_www/backend/cache,"$base_dir"/default_www/install/cache,"$base_dir"/default_www/docs,"$base_dir"/tools,"$base_dir"/library/external --extensions=php --report=full "${@:-$base_dir}"
