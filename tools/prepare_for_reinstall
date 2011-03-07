@@ -1,31 +1,37 @@
-#! /bin/bash
+#!/bin/bash
 #
-# This script will remove all cache-files.
+# Remove all cache and configuration files.
 #
 # @version	1.0.0
 # @author	Tijs Verkoyen <tijs@sumocoders.be>
 
-rm -f `find ../default_www/install/cache/ ! -name ".gitignore" -type f`
-rm -f ../default_www/install/installed.txt
+# determine the absolute path of the base directory
+base_dir="$(php -r 'echo realpath($_SERVER["argv"][1]);' "$(dirname "$0")/..")";
 
-rm -f `find ../default_www/frontend/cache/cached_templates/ ! -name ".gitignore" -type f`
-rm -f `find ../default_www/frontend/cache/config/ ! -name ".gitignore" -type f`
-rm -f `find ../default_www/frontend/cache/locale/ ! -name ".gitignore" -type f`
-rm -f `find ../default_www/frontend/cache/minified_css/ ! -name ".gitignore" -type f`
-rm -f `find ../default_www/frontend/cache/minified_js/ ! -name ".gitignore" -type f`
-rm -f `find ../default_www/frontend/cache/navigation/ ! -name ".gitignore" -type f`
-rm -f `find ../default_www/frontend/cache/statistics/ ! -name ".gitignore" -type f`
-rm -f `find ../default_www/frontend/cache/compiled_templates/ ! -name ".gitignore" -type f`
+# go to the base directory so we do not need to use "../"
+cd "$base_dir";
 
-rm -f `find ../default_www/backend/cache/analytics/ ! -name ".gitignore" -type f`
-rm -f `find ../default_www/backend/cache/config/ ! -name ".gitignore" -type f`
-rm -f `find ../default_www/backend/cache/cronjobs/ ! -name ".gitignore" -type f`
-rm -f `find ../default_www/backend/cache/locale/ ! -name ".gitignore" -type f`
-rm -f `find ../default_www/backend/cache/mailmotor/ ! -name ".gitignore" -type f`
-rm -f `find ../default_www/backend/cache/compiled_templates/ ! -name ".gitignore" -type f`
+# find and delete the relevant files
+find \
+	default_www/install/cache/ \
+	default_www/install/installed.txt \
+	default_www/frontend/cache/cached_templates/ \
+	default_www/frontend/cache/config/ \
+	default_www/frontend/cache/locale/ \
+	default_www/frontend/cache/minified_css/ \
+	default_www/frontend/cache/minified_js/ \
+	default_www/frontend/cache/navigation/ \
+	default_www/frontend/cache/statistics/ \
+	default_www/frontend/cache/compiled_templates/ \
+	default_www/backend/cache/analytics/ \
+	default_www/backend/cache/config/ \
+	default_www/backend/cache/cronjobs/ \
+	default_www/backend/cache/locale/ \
+	default_www/backend/cache/mailmotor/ \
+	default_www/backend/cache/compiled_templates/ \
+	library/globals.php \
+	library/globals.frontend.php \
+	library/globals.backend.php \
+	! -name '.gitignore' -type f -print -delete;
 
-rm -f ../library/globals.php
-rm -f ../library/globals.frontend.php
-rm -f ../library/globals.backend.php
-
-echo 'All done! Cache files removed.'
+echo 'All done! Cache and configuration files removed.';

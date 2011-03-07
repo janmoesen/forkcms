@@ -1,10 +1,14 @@
 #!/bin/bash
 #
-# This script will check if your code matches the guidelines
-# @remark: make sure your CLI has enough memory, I hacked the phpcs-file
+# Check if your code matches the coding guidelines.
+# See http://developers.fork-cms.be/?title=Coding_standards for more.
 #
-# 1. sudo vim /usr/bin/phpcs
-# 2. added "ini_set('memory_limit', '2048M');"
+# Make sure your CLI has enough memory. Either hack the phpcs file:
+#     1. sudo vim /usr/bin/phpcs # Your location may vary
+#     2. add "ini_set('memory_limit', '2048M');"
+# or edit your command line php.ini file:
+#     1. sudo vim /etc/php5/cli/php.ini # Your location may vary
+#     2. search for memory_limit and set it to -1 or a fixed (but high enough) value
 #
 # @version	1.0.0
 # @author	Tijs Verkoyen <tijs@sumocoders.be>
@@ -12,7 +16,7 @@
 # check if phpcs is installed
 type -P phpcs &>/dev/null || { echo "PHP CodeSniffer is not installed, run 'pear install PHP_CodeSniffer'." >&2; exit 1; }
 
-# determine the relevant directories
+# determine the absolute path of the base directory
 base_dir="$(php -r 'echo realpath($_SERVER["argv"][1]);' "$(dirname "$0")/..")";
 
 # run it
