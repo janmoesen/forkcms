@@ -1,4 +1,4 @@
-if(!jsBackend) { var jsBackend = new Object(); }
+if(!jsBackend) { var jsBackend = {}; }
 
 
 /**
@@ -12,10 +12,10 @@ jsBackend.faq =
 	 * Kind of constructor
 	 */
 	init: function()
-	{	
+	{
 		// destroy default drag and drop
 		$('.sequenceByDragAndDrop tbody').sortable('destroy');
-		
+
 		// drag and drop
 		jsBackend.faq.bindDragAndDropCategoryFaq();
 		jsBackend.faq.checkForEmptyCategories();
@@ -28,7 +28,7 @@ jsBackend.faq =
 	checkForEmptyCategories: function()
 	{
 		// when there are empty categories
-		if($('tr.noQuestions').length > 0)
+		if($('tr.noQuestions').length)
 		{
 			// make datagrid droppable
 			$('table.datagrid').droppable(
@@ -36,7 +36,7 @@ jsBackend.faq =
 				// only accept table rows
 				accept: 'table.datagrid tr',
 				drop: function(event, ui)
-				{	
+				{
 					// remove the no questions in category message
 					$(this).find('tr.noQuestions').remove();
 				}
@@ -49,7 +49,7 @@ jsBackend.faq =
 	 * Bind drag and dropping of a category
 	 */
 	bindDragAndDropCategoryFaq: function()
-	{	
+	{
 		// go over every datagrid
 		$.each($('div.datagridHolder'), function()
 		{
@@ -64,7 +64,7 @@ jsBackend.faq =
 				{
 					// vars we will need
 					var questionId = ui.item.prop('id');
-					var fromCategoryId = $(this).prop('id').substring(9);
+					var fromCategoryId = this.id.substring(9);
 					var toCategoryId = ui.item.parents('.datagridHolder').prop('id').substring(9);
 					var fromCategorySequence = $(this).sortable('toArray').join(',');
 					var toCategorySequence = $('#datagrid-' + toCategoryId).sortable('toArray').join(',');
@@ -72,20 +72,20 @@ jsBackend.faq =
 					// make ajax call
 					$.ajax(
 					{
-						cache: false, type: 'POST', dataType: 'json', 
+						cache: false, type: 'POST', dataType: 'json',
 						url: '/backend/ajax.php?module=' + jsBackend.current.module + '&action=sequence_questions&language=' + jsBackend.current.language,
 						data: 'questionId=' + questionId + '&fromCategoryId=' + fromCategoryId + '&toCategoryId=' + toCategoryId + '&fromCategorySequence=' + fromCategorySequence + '&toCategorySequence=' + toCategorySequence,
 						success: function(data, textStatus)
-						{ 
+						{
 							// not a succes so revert the changes
 							if(data.code == 200)
-							{ 
-								// if there are no records -> show message					
+							{
+								// if there are no records -> show message
 								if($('div#datagrid-' + fromCategoryId + ' table.datagrid tr').length == 1)
 								{
 									$('div#datagrid-' + fromCategoryId + ' table.datagrid').append('<tr class="noQuestions"><td colspan="3">{$msgNoQuestionInCategory}</td></tr>');
 								}
-								
+
 								// redo odd-even
 								var table = $('table.datagrid');
 								table.find('tr').removeClass('odd').removeClass('even');
@@ -96,11 +96,11 @@ jsBackend.faq =
 							{
 								// revert
 								$(this).sortable('cancel');
-								
+
 								// show message
 								jsBackend.messages.add('error', 'alter sequence failed.');
 							}
-							
+
 							// alert the user
 							if(data.code != 200 && jsBackend.debug){ alert(data.message); }
 						},
@@ -108,7 +108,7 @@ jsBackend.faq =
 						{
 							// revert
 							$(this).sortable('cancel');
-							
+
 							// show message
 							jsBackend.messages.add('error', 'alter sequence failed.');
 
@@ -118,7 +118,7 @@ jsBackend.faq =
 					});
 				}
 			});
-			
+
 		});
 	},
 

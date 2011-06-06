@@ -1,4 +1,4 @@
-if(!jsBackend) { var jsBackend = new Object(); }
+if(!jsBackend) { var jsBackend = {}; }
 
 
 /**
@@ -31,9 +31,9 @@ jsBackend.pages =
 			$('form').append('<input type="hidden" name="status" value="draft" />');
 			$('form').submit();
 		});
-		
+
 		// do meta
-		if($('#title').length > 0) $('#title').doMeta();
+		if($('#title').length) $('#title').doMeta();
 	},
 
 
@@ -44,7 +44,7 @@ jsBackend.pages =
 
 /**
  * All methods related to the controls (buttons, ...)
- * 
+ *
  * @author	Tijs Verkoyen <tijs@sumocoders.be>
  * @author	Dieter Vanden Eynde <dieter@netlash.com>
  */
@@ -56,7 +56,7 @@ jsBackend.pages.extras =
 		// bind events
 		$('#extraType').change(function(evt)
 		{
-			if($(this).val() != 'block') 
+			if($(this).val() != 'block')
 			{
 				var hasModules = false;
 
@@ -76,7 +76,7 @@ jsBackend.pages.extras =
 				// no modules
 				if(!hasModules) $('#extraType option[value="block"]').prop('disabled', '');
 			}
-			
+
 			jsBackend.pages.extras.populateExtraModules(evt);
 		});
 		$('#extraModule').change(jsBackend.pages.extras.populateExtraIds);
@@ -88,7 +88,7 @@ jsBackend.pages.extras =
 		jsBackend.pages.extras.load();
 	},
 
-	
+
 	// load initial data, or initialize the dialogs
 	load: function()
 	{
@@ -96,12 +96,12 @@ jsBackend.pages.extras =
 		$('input.block_extra_id').each(function()
 		{
 			var value = $(this).val();
-			var id = $(this).prop('id').replace('blockExtraId', '');
+			var id = this.id.replace('blockExtraId', '');
 			jsBackend.pages.extras.changeExtra(value, id);
 		});
 
 		// initialize the modal for choosing an extra
-		if($('#chooseExtra').length > 0)
+		if($('#chooseExtra').length)
 		{
 			$('#chooseExtra').dialog(
 			{
@@ -132,7 +132,7 @@ jsBackend.pages.extras =
 			 });
 		}
 
-		if($('#chooseTemplate').length > 0)
+		if($('#chooseTemplate').length)
 		{
 			$('#chooseTemplate').dialog(
 			{
@@ -197,19 +197,19 @@ jsBackend.pages.extras =
 			var id = $(this).val();
 			if(id != '' && typeof extrasById[id] != 'undefined' && extrasById[id].type == 'block') hasModules = true;
 		});
-		
+
 		// blocks linked?
 		if(hasModules)
 		{
 			// show warning
 			$('#extraWarningAlreadyBlock').show();
-			
+
 			// disable blocks
 			$('#extraType option[value="block"]').prop('disabled', 'disabled');
-			
+
 			// get id
 			var id = $('#blockExtraId'+ blockId).val();
-			
+
 			// reenable
 			if(typeof extrasById[id] != 'undefined' && extrasById[id].type == 'block') $('#extraType option[value="block"]').prop('disabled', '');
 		}
@@ -279,7 +279,7 @@ jsBackend.pages.extras =
 		$('#extraForBlock').val('');
 
 		// block exists
-		if($('#templateBlock-'+ selectedBlock).length > 0)
+		if($('#templateBlock-'+ selectedBlock).length)
 		{
 			// block/widget
 			if(typeof extrasById != 'undefined' && typeof extrasById[selectedExtraId] != 'undefined')
@@ -298,9 +298,9 @@ jsBackend.pages.extras =
 					$('#blockContentModule-'+ selectedBlock +' .oneLiner span.oneLinerElement').html(extrasById[selectedExtraId].message);
 
 					if(extrasById[selectedExtraId].data.url == '') $('#blockContentModule-'+ selectedBlock +' .oneLiner a').hide();
-					else 
+					else
 					{
-						$('#blockContentModule-'+ selectedBlock +' .oneLiner a').show().prop('href', extrasById[selectedExtraId].data.url);						
+						$('#blockContentModule-'+ selectedBlock +' .oneLiner a').show().prop('href', extrasById[selectedExtraId].data.url);
 					}
 					$('#blockContentModule-'+ selectedBlock).show();
 				}
@@ -403,7 +403,7 @@ jsBackend.pages.extras =
 
 /**
  * All methods related to managing the templates
- * 
+ *
  * @author	Tijs Verkoyen <tijs@sumocoders.be>
  */
 jsBackend.pages.manageTemplates =
@@ -412,7 +412,7 @@ jsBackend.pages.manageTemplates =
 	init: function()
 	{
 		// check if we need to do something
-		if($('#numBlocks').length > 0)
+		if($('#numBlocks').length)
 		{
 			// bind event
 			$('#numBlocks').change(jsBackend.pages.manageTemplates.showMetaData);
@@ -451,7 +451,7 @@ jsBackend.pages.manageTemplates =
 
 /**
  * All methods related to the templates
- * 
+ *
  * @author	Tijs Verkoyen <tijs@sumocoders.be>
  */
 jsBackend.pages.template =
@@ -507,7 +507,7 @@ jsBackend.pages.template =
 			$('.contentBlock').each(function()
 			{
 				// init vars
-				var index = $(this).prop('id').replace('block-', '');
+				var index = this.id.replace('block-', '');
 				var extraId = $('#blockExtraId'+ index).val();
 				var defaultExtras = current.data['default_extras'];
 
@@ -516,7 +516,7 @@ jsBackend.pages.template =
 				{
 					if(defaultExtras[index] != 'editor') { extraId = parseInt(defaultExtras[index]); }
 				}
-				
+
 				// change the extra
 				jsBackend.pages.extras.changeExtra(extraId, index);
 			});
@@ -542,7 +542,7 @@ jsBackend.pages.template =
 
 /**
  * All methods related to the tree
- * 
+ *
  * @author	Tijs Verkoyen <tijs@sumocoders.be>
  */
 jsBackend.pages.tree =
@@ -565,7 +565,7 @@ jsBackend.pages.tree =
 			var openedIds = ['page-'+ pageID];
 
 			// add parents
-			for(var i = 0; i < parents.length; i++) openedIds.push($(parents[i]).prop('id'));
+			for(var i = 0; i < parents.length; i++) openedIds.push(parents[i].id);
 		}
 
 		// add home if needed
@@ -622,10 +622,10 @@ jsBackend.pages.tree =
 	beforeMove: function(node, refNode, type, tree)
 	{
 		// get pageID that has to be moved
-		var currentPageID = $(node).prop('id').replace('page-', '');
+		var currentPageID = node.id.replace('page-', '');
 		if(typeof refNode == 'undefined') parentPageID = 0;
-		else var parentPageID = $(refNode).prop('id').replace('page-', '')
-		
+		else var parentPageID = refNode.id.replace('page-', '')
+
 		// home is a special item
 		if(parentPageID == '1')
 		{
@@ -682,11 +682,11 @@ jsBackend.pages.tree =
 	onMove: function(node, refNode, type, tree, rollback)
 	{
 		// get pageID that has to be moved
-		var currentPageID = $(node).prop('id').replace('page-', '');
+		var currentPageID = node.id.replace('page-', '');
 
 		// get pageID wheron the page has been dropped
 		if(typeof refNode == 'undefined') droppedOnPageID = 0;
-		else var droppedOnPageID = $(refNode).prop('id').replace('page-', '')
+		else var droppedOnPageID = refNode.id.replace('page-', '')
 
 		// make the call
 		$.ajax(

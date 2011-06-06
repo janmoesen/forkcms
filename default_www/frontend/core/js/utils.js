@@ -1,4 +1,4 @@
-if(!utils) var utils = new Object();
+if(!utils) var utils = {};
 
 
 /**
@@ -292,7 +292,7 @@ utils.url =
 	{
 		// init return value
 		var getValue = '';
-		
+
 		// get GET chunks from url
 	    var hashes = window.location.search.slice(window.location.search.indexOf('?') + 1).split('&');
 

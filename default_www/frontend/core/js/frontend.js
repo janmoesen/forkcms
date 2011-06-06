@@ -1,4 +1,4 @@
-if(!jsFrontend) { var jsFrontend = new Object(); }
+if(!jsFrontend) { var jsFrontend = {}; }
 
 
 /**
@@ -87,7 +87,7 @@ jsFrontend.forms =
 		var dayNamesShort = ['{$locDayShortSun}', '{$locDayShortMon}', '{$locDayShortTue}', '{$locDayShortWed}', '{$locDayShortThu}', '{$locDayShortFri}', '{$locDayShortSat}'];
 		var monthNames = ['{$locMonthLong1}', '{$locMonthLong2}', '{$locMonthLong3}', '{$locMonthLong4}', '{$locMonthLong5}', '{$locMonthLong6}', '{$locMonthLong7}', '{$locMonthLong8}', '{$locMonthLong9}', '{$locMonthLong10}', '{$locMonthLong11}', '{$locMonthLong12}'];
 		var monthNamesShort = ['{$locMonthShort1}', '{$locMonthShort2}', '{$locMonthShort3}', '{$locMonthShort4}', '{$locMonthShort5}', '{$locMonthShort6}', '{$locMonthShort7}', '{$locMonthShort8}', '{$locMonthShort9}', '{$locMonthShort10}', '{$locMonthShort11}', '{$locMonthShort12}'];
-		
+
 		$('.inputDatefieldNormal, .inputDatefieldFrom, .inputDatefieldTill, .inputDatefieldRange').datepicker({
 			dayNames: dayNames,
 			dayNamesMin: dayNamesMin,
@@ -99,17 +99,17 @@ jsFrontend.forms =
 			prevText: '{$lblPrevious}',
 			showAnim: 'slideDown'
 		});
-		
+
 		// the default, nothing special
 		$('.inputDatefieldNormal').each(function()
 		{
 			// get data
 			var data = $(this).data();
 			var value = $(this).val();
-			
+
 			// set options
-			$(this).datepicker('option', { 
-				dateFormat: data.mask, 
+			$(this).datepicker('option', {
+				dateFormat: data.mask,
 				firstDay: data.firstday
 			}).datepicker('setDate', value);
 		});
@@ -122,7 +122,7 @@ jsFrontend.forms =
 			var value = $(this).val();
 
 			// set options
-			$(this).datepicker('option', { 
+			$(this).datepicker('option', {
 				dateFormat: data.mask, firstDay: data.firstday,
 				minDate: new Date(parseInt(data.startdate.split('-')[0], 10), parseInt(data.startdate.split('-')[1], 10) - 1, parseInt(data.startdate.split('-')[2], 10))
 			}).datepicker('setDate', value);
@@ -136,7 +136,7 @@ jsFrontend.forms =
 			var value = $(this).val();
 
 			// set options
-			$(this).datepicker('option', 
+			$(this).datepicker('option',
 			{
 				dateFormat: data.mask,
 				firstDay: data.firstday,
@@ -152,7 +152,7 @@ jsFrontend.forms =
 			var value = $(this).val();
 
 			// set options
-			$(this).datepicker('option', 
+			$(this).datepicker('option',
 			{
 				dateFormat: data.mask,
 				firstDay: data.firstday,
@@ -279,13 +279,13 @@ jsFrontend.search =
 	init: function()
 	{
 		// autosuggest (search widget)
-		if($('input.autoSuggest').length > 0) jsFrontend.search.autosuggest(55);
+		if($('input.autoSuggest').length) jsFrontend.search.autosuggest(55);
 
 		// autocomplete (search results page: autocomplete based on known search terms)
-		if($('input.autoComplete').length > 0) jsFrontend.search.autocomplete();
+		if($('input.autoComplete').length) jsFrontend.search.autocomplete();
 
 		// livesuggest (search results page: live feed of matches)
-		if($('input.liveSuggest').length > 0 && $('#searchContainer').length > 0) jsFrontend.search.livesuggest();
+		if($('input.liveSuggest').length && $('#searchContainer').length) jsFrontend.search.livesuggest();
 	},
 
 

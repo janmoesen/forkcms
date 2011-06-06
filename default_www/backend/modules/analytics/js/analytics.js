@@ -1,4 +1,4 @@
-if(!jsBackend) { var jsBackend = new Object(); }
+if(!jsBackend) { var jsBackend = {}; }
 
 
 jsBackend.analytics =
@@ -24,7 +24,7 @@ jsBackend.analytics.charts =
 {
 	init: function()
 	{
-		if($('#chartPieChart').length > 0 || $('#chartDoubleMetricPerDay').length > 0 || $('#chartSingleMetricPerDay').length > 0 || $('#chartWidget').length > 0)
+		if($('#chartPieChart').length || $('#chartDoubleMetricPerDay').length || $('#chartSingleMetricPerDay').length || $('#chartWidget').length)
 		{
 			Highcharts.setOptions(
 			{
@@ -52,13 +52,13 @@ jsBackend.analytics.charts =
 }
 
 
-jsBackend.analytics.chartPieChart = 
+jsBackend.analytics.chartPieChart =
 {
 	chart: '',
 
 	init: function()
 	{
-		if($('#chartPieChart').length > 0) { jsBackend.analytics.chartPieChart.create(); }
+		if($('#chartPieChart').length) { jsBackend.analytics.chartPieChart.create(); }
 	},
 
 	// add new chart
@@ -130,7 +130,7 @@ jsBackend.analytics.chartDoubleMetricPerDay =
 
 	init: function()
 	{
-		if($('#chartDoubleMetricPerDay').length > 0) { jsBackend.analytics.chartDoubleMetricPerDay.create(); }
+		if($('#chartDoubleMetricPerDay').length) { jsBackend.analytics.chartDoubleMetricPerDay.create(); }
 	},
 
 	// add new chart
@@ -201,7 +201,7 @@ jsBackend.analytics.chartSingleMetricPerDay =
 
 	init: function()
 	{
-		if($('#chartSingleMetricPerDay').length > 0) { jsBackend.analytics.chartSingleMetricPerDay.create(); }
+		if($('#chartSingleMetricPerDay').length) { jsBackend.analytics.chartSingleMetricPerDay.create(); }
 	},
 
 	// add new chart
@@ -266,7 +266,7 @@ jsBackend.analytics.chartWidget =
 
 	init: function()
 	{
-		if($('#chartWidget').length > 0) { jsBackend.analytics.chartWidget.create(); }
+		if($('#chartWidget').length) { jsBackend.analytics.chartWidget.create(); }
 	},
 
 	// add new chart
@@ -338,7 +338,7 @@ jsBackend.analytics.loading =
 
 	init: function()
 	{
-		if($('#longLoader').length > 0)
+		if($('#longLoader').length)
 		{
 			// loading bar stuff
 			$('#longLoader').show();
@@ -437,7 +437,7 @@ jsBackend.analytics.resize =
 {
 	interval: 1000,
 	timeout: false,
-		
+
 	init: function()
 	{
 		$(window).resize(function()
@@ -450,7 +450,7 @@ jsBackend.analytics.resize =
 			}
 		});
 	},
-		
+
 	resizeEnd: function()
 	{
 		if(new Date() - resizeTime < jsBackend.analytics.resize.interval)
@@ -460,22 +460,22 @@ jsBackend.analytics.resize =
 		else
 		{
 			timeout = false;
-			if($('#chartPieChart').length > 0)
+			if($('#chartPieChart').length)
 			{
 				$('#chartPieChart').html('&nbsp;');
 				jsBackend.analytics.chartPieChart.create();
 			}
-			if($('#chartDoubleMetricPerDay').length > 0)
+			if($('#chartDoubleMetricPerDay').length)
 			{
 				$('#chartDoubleMetricPerDay').html('&nbsp;');
 				jsBackend.analytics.chartDoubleMetricPerDay.create();
 			}
-			if($('#chartSingleMetricPerDay').length > 0)
+			if($('#chartSingleMetricPerDay').length)
 			{
 				$('#chartSingleMetricPerDay').html('&nbsp;');
 				jsBackend.analytics.chartSingleMetricPerDay.create();
 			}
-			if($('#chartWidget').length > 0)
+			if($('#chartWidget').length)
 			{
 				$('#chartWidget').html('&nbsp;');
 				jsBackend.analytics.chartWidget.create();

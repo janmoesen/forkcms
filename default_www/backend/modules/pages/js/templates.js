@@ -1,4 +1,4 @@
-if(!jsBackend) { var jsBackend = new Object(); }
+if(!jsBackend) { var jsBackend = {}; }
 
 
 /**
@@ -12,7 +12,7 @@ jsBackend.templates =
 	 * Kind of constructor
 	 */
 	init: function()
-	{	
+	{
 		// change template
 		jsBackend.templates.changeTemplate();
 	},

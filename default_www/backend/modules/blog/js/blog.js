@@ -1,4 +1,4 @@
-if(!jsBackend) { var jsBackend = new Object(); }
+if(!jsBackend) { var jsBackend = {}; }
 
 
 /**
@@ -14,7 +14,7 @@ jsBackend.blog =
 		jsBackend.blog.controls.init();
 
 		// do meta
-		if($('#title').length > 0) $('#title').doMeta();
+		if($('#title').length) $('#title').doMeta();
 	},
 
 
@@ -26,7 +26,7 @@ jsBackend.blog =
 jsBackend.blog.controls =
 {
 	currentCategory: null,
-		
+
 	// init, something like a constructor
 	init: function()
 	{
@@ -35,13 +35,13 @@ jsBackend.blog.controls =
 			$('form').append('<input type="hidden" name="status" value="draft" />');
 			$('form').submit();
 		});
-		
+
 		$('#filter #category').change(function(evt)
 		{
 			$('#filter').submit();
 		});
-		
-		if($('#addCategoryDialog').length > 0) {
+
+		if($('#addCategoryDialog').length) {
 			$('#addCategoryDialog').dialog(
 				{
 					autoOpen: false,
@@ -54,7 +54,7 @@ jsBackend.blog.controls =
 						{
 							// hide errors
 							$('#categoryTitleError').hide();
-							
+
 							$.ajax(
 							{
 								url: '/backend/ajax.php?module='+ jsBackend.current.module +'&action=add_category&language={$LANGUAGE}',
@@ -73,24 +73,24 @@ jsBackend.blog.controls =
 									{
 										// add and set selected
 										$('#categoryId').append('<option value="'+ json.data.id +'">'+ json.data.title +'</option>');
-										
+
 										// reset value
 										jsBackend.blog.controls.currentCategory = json.data.id;
-										
+
 										// close dialog
 										$('#addCategoryDialog').dialog('close');
 									}
 								}
 							});
 						},
-						
+
 						'{$lblCancel|ucfirst}': function()
 						{
 							// close the dialog
 							$(this).dialog('close');
 						}
 					},
-					close: function(event, ui) 
+					close: function(event, ui)
 					{
 						// reset value to previous selected item
 						$('#categoryId').val(jsBackend.blog.controls.currentCategory);
@@ -105,19 +105,19 @@ jsBackend.blog.controls =
 				{
 					// prevent default
 					evt.preventDefault();
-					
+
 					// open dialog
 					$('#addCategoryDialog').dialog('open');
 				}
-				
+
 				// reset current category
 				else jsBackend.blog.controls.currentCategory = $('#categoryId').val();
 			});
 		}
-		
+
 		jsBackend.blog.controls.currentCategory = $('#categoryId').val();
 	},
-	
+
 
 	// end
 	eoo: true

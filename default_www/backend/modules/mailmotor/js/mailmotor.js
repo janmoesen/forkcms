@@ -1,4 +1,4 @@
-if(!jsBackend) { var jsBackend = new Object(); }
+if(!jsBackend) { var jsBackend = {}; }
 
 jsBackend.mailmotor =
 {
@@ -12,16 +12,16 @@ jsBackend.mailmotor =
 		jsBackend.mailmotor.step3.init();
 		jsBackend.mailmotor.step4.init();
 		jsBackend.mailmotor.templateSelection.init();
-		
+
 		// multiple text box for adding multiple emailaddresses
-		if($('form#add #email').length > 0) {
+		if($('form#add #email').length) {
 			$('form#add #email').multipleTextbox(
-				{ 
-					emptyMessage: '', 
-					addLabel: '{$lblAdd|ucfirst}', 
+				{
+					emptyMessage: '',
+					addLabel: '{$lblAdd|ucfirst}',
 					removeLabel: '{$lblDelete|ucfirst}',
 					canAddNew: true
-				}); 
+				});
 		}
 	},
 
@@ -35,7 +35,7 @@ jsBackend.mailmotor.charts =
 {
 	init: function()
 	{
-		if($('#chartPieChart').length > 0 || $('#chartDoubleMetricPerDay').length > 0 || $('#chartSingleMetricPerDay').length > 0 || $('#chartWidget').length > 0)
+		if($('#chartPieChart').length || $('#chartDoubleMetricPerDay').length || $('#chartSingleMetricPerDay').length || $('#chartWidget').length)
 		{
 			Highcharts.setOptions(
 			{
@@ -67,7 +67,7 @@ jsBackend.mailmotor.chartPieChart =
 {
 	init: function()
 	{
-		if($('#chartPieChart').length > 0) { jsBackend.mailmotor.chartPieChart.create(); }
+		if($('#chartPieChart').length) { jsBackend.mailmotor.chartPieChart.create(); }
 	},
 
 	// add new chart
@@ -184,7 +184,7 @@ jsBackend.mailmotor.linkAccount =
 			// do the call to link the account
 			jsBackend.mailmotor.linkAccount.doCall();
 		});
-		
+
 		// create client is checked
 		$('#clientId').change(function(e)
 		{
@@ -197,33 +197,33 @@ jsBackend.mailmotor.linkAccount =
 				$('#contactName').val('');
 				$('#contactEmail').val('');
 			}
-			
+
 			// an existing client was chosen, so we have to update the info fields with the current details of the client
 			else
 			{
 				$.ajax(
 				{
-					cache: false, 
+					cache: false,
 					url: '/backend/ajax.php?module=' + jsBackend.current.module + '&action=load_client_info&language=' + jsBackend.current.language,
 					data: 'client_id='+ clientId,
 					success: function(data, textStatus)
 					{
 						$.each($('#countries').find('option'), function(index, item)
 						{
-							if($(this).text() == data.data.country)
+							if(this.text == data.data.country)
 							{
-								$(this).prop('selected', true);
+								this.selected = true;
 							}
 						});
-						
+
 						$.each($('#timezones').find('option'), function(index, item)
 						{
-							if($(this).text() == data.data.timezone)
+							if(this.text == data.data.timezone)
 							{
-								$(this).prop('selected', true);
+								this.selected = true;
 							}
 						});
-						
+
 						$('#companyName').val(data.data.company);
 						$('#contactName').val(data.data.contact_name);
 						$('#contactEmail').val(data.data.email);
@@ -243,7 +243,7 @@ jsBackend.mailmotor.linkAccount =
 		// make the call
 		$.ajax(
 		{
-			cache: false, 
+			cache: false,
 			url: '/backend/ajax.php?module=' + jsBackend.current.module + '&action=link_account&language=' + jsBackend.current.language,
 			data: 'url='+ url.val() +'&username='+ username.val() +'&password='+ password.val(),
 			success: function(data, textStatus)
@@ -359,11 +359,11 @@ jsBackend.mailmotor.step3 =
 
 				// set variables
 				var subject = $('#subject').val();
-				var plainText = ($('#contentPlain').length > 0) ? $('#contentPlain').val() : '';
+				var plainText = $('#contentPlain').val() || '';
 
 				// remove tiny fields added to the body by naughty tinyMCE
 				body.find('div.mceListBoxMenu').remove();
-				
+
 				// set iframe variables
 				var textareaValue = encodeURIComponent(iframe[0].contentWindow.getTinyMCEContent());
 				var bodyHTML = encodeURIComponent(body.html());
@@ -591,10 +591,10 @@ jsBackend.mailmotor.templateSelection =
 		{
 			// prevent default
 			evt.preventDefault();
-			
+
 			// store the object
 			var radiobutton = $(this).find('input:radio:first');
-			
+
 			// set checked
 			radiobutton.prop('checked', 'checked');
 

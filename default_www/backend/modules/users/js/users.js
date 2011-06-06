@@ -1,4 +1,4 @@
-if(!jsBackend) { var jsBackend = new Object(); }
+if(!jsBackend) { var jsBackend = {}; }
 
 
 /**
@@ -33,7 +33,7 @@ jsBackend.users.controls =
 	nick: function()
 	{
 		// are all elements available
-		if($('#nickname').length > 0 && $('#name').length > 0 && $('#surname').length > 0)
+		if($('#nickname').length && $('#name').length && $('#surname').length)
 		{
 			var change = true;
 

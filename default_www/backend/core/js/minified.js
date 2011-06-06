@@ -857,7 +857,7 @@ a.left);b.position[1]="left";e.addClass(c[3])}if(f[0]||f[2])b.offset[0]*=-1;if(f
 			$(this).bind('keyup', calculateMeta);
 
 			// bind change on the checkboxes
-			if($('#pageTitle').length > 0 && $('#pageTitleOverwrite').length > 0)
+			if($('#pageTitle').length && $('#pageTitleOverwrite').length)
 			{
 				$('#pageTitleOverwrite').change(function(evt)
 				{
@@ -868,7 +868,7 @@ a.left);b.position[1]="left";e.addClass(c[3])}if(f[0]||f[2])b.offset[0]*=-1;if(f
 				});
 			}
 
-			if($('#navigationTitle').length > 0 && $('#navigationTitleOverwrite').length > 0)
+			if($('#navigationTitle').length && $('#navigationTitleOverwrite').length)
 			{
 				$('#navigationTitleOverwrite').change(function(evt)
 				{
@@ -909,7 +909,7 @@ a.left);b.position[1]="left";e.addClass(c[3])}if(f[0]||f[2])b.offset[0]*=-1;if(f
 			{
 				var title = (typeof element != 'undefined') ? element.val() : $(this).val();
 
-				if($('#pageTitle').length > 0 && $('#pageTitleOverwrite').length > 0)
+				if($('#pageTitle').length && $('#pageTitleOverwrite').length)
 				{
 					if(!$('#pageTitleOverwrite').is(':checked'))
 					{
@@ -917,7 +917,7 @@ a.left);b.position[1]="left";e.addClass(c[3])}if(f[0]||f[2])b.offset[0]*=-1;if(f
 					}
 				}
 
-				if($('#navigationTitle').length > 0 && $('#navigationTitleOverwrite').length > 0)
+				if($('#navigationTitle').length && $('#navigationTitleOverwrite').length)
 				{
 					if(!$('#navigationTitleOverwrite').is(':checked'))
 					{
@@ -1887,7 +1887,7 @@ a.left);b.position[1]="left";e.addClass(c[3])}if(f[0]||f[2])b.offset[0]*=-1;if(f
 			});
 
 			// remove previous HTML
-			if($('#elementList-' + id).length > 0)
+			if($('#elementList-' + id).length)
 			{
 				$('#elementList-' + id).parent('.multipleSelectWrapper').remove();
 			}
@@ -2118,7 +2118,7 @@ a.left);b.position[1]="left";e.addClass(c[3])}if(f[0]||f[2])b.offset[0]*=-1;if(f
 			});
 
 			// remove previous HTML
-			if($('#elementList-' + id).length > 0)
+			if($('#elementList-' + id).length)
 			{
 				$('#elementList-' + id).parent('.multipleTextWrapper').remove();
 			}

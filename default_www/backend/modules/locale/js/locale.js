@@ -1,4 +1,4 @@
-if(!jsBackend) { var jsBackend = new Object(); }
+if(!jsBackend) { var jsBackend = {}; }
 
 jsBackend.locale =
 {
@@ -17,35 +17,35 @@ jsBackend.locale.controls =
 {
 	init: function()
 	{
-		if($('select#application').length > 0 && $('select#module').length > 0) 
+		if($('select#application').length && $('select#module').length)
 		{
 			// bind
 			$('select#application').bind('change', jsBackend.locale.controls.enableDisableModules);
-			
+
 			// call to start
 			jsBackend.locale.controls.enableDisableModules();
 		}
 	},
 
-	enableDisableModules: function() 
+	enableDisableModules: function()
 	{
 		// frontend can't have specific module
-		if($('select#application').val() == 'frontend') 
+		if($('select#application').val() == 'frontend')
 		{
 			// set all modules disabled
 			$('select#module option').prop('disabled', 'disabled');
-			
+
 			// enable core
 			$('select#module option[value=core]').prop('disabled', '').prop('selected', 'selected');
 		}
-		
+
 		// remove the disbaled stuff
-		else 
+		else
 		{
 			$('select#module option').prop('disabled', '');
 		}
 	},
-	
+
 
 	// end
 	eoo: true

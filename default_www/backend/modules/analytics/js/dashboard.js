@@ -1,4 +1,4 @@
-if(!jsBackend) { jsBackend = new Object; }
+if(!jsBackend) { var jsBackend = {}; }
 
 jsBackend.analyticsDashboard =
 {

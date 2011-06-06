@@ -1,4 +1,4 @@
-if(!jsBackend) { var jsBackend = new Object(); }
+if(!jsBackend) { var jsBackend = {}; }
 
 
 /**
@@ -14,28 +14,28 @@ jsBackend.settings =
 	init: function()
 	{
 		$('#facebookAdminIds').multipleTextbox(
-		{ 
-			emptyMessage: '{$msgNoAdminIds}', 
-			addLabel: '{$lblAdd|ucfirst}', 
+		{
+			emptyMessage: '{$msgNoAdminIds}',
+			addLabel: '{$lblAdd|ucfirst}',
 			removeLabel: '{$lblDelete|ucfirst}',
 			canAddNew: true
-		}); 
-		
-		if($('#testEmailConnection').length > 0) $('#testEmailConnection').bind('click', jsBackend.settings.testEmailConnection);
-		
+		});
+
+		if($('#testEmailConnection').length) $('#testEmailConnection').bind('click', jsBackend.settings.testEmailConnection);
+
 	},
 
-	
-	testEmailConnection: function(evt) 
+
+	testEmailConnection: function(evt)
 	{
 		// prevent default
 		evt.preventDefault();
-		
+
 		// show spinner
 		$('#testEmailConnectionSpinner').show();
 		$('#testEmailConnectionError').hide();
 		$('#testEmailConnectionSuccess').hide();
-		
+
 		// make the call
 		$.ajax(
 		{
@@ -54,13 +54,13 @@ jsBackend.settings =
 			{
 				// hide spinner
 				$('#testEmailConnectionSpinner').hide();
-				
+
 				// show error
 				$('#testEmailConnectionError').show();
 			}
-		});		
+		});
 	},
-	
+
 
 	eoo: true
 }
