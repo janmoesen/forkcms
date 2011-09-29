@@ -207,10 +207,10 @@ class FrontendURL
 				if(isset($getChunks[0]))
 				{
 					// reset in $_GET
-					$_GET[$getChunks[0]] = (isset($getChunks[1])) ? (string) $getChunks[1] : '';
+					$_GET[urldecode($getChunks[0])] = (isset($getChunks[1])) ? urldecode((string) $getChunks[1]) : '';
 
 					// add into parameters
-					if(isset($getChunks[1])) $this->parameters[(string) $getChunks[0]] = (string) $getChunks[1];
+					if(isset($getChunks[1])) $this->parameters[urldecode((string) $getChunks[0])] = urldecode((string) $getChunks[1]);
 				}
 			}
 		}
