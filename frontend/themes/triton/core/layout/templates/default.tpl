@@ -7,7 +7,7 @@
 
 				{* Logo *}
 				<div id="logo">
-					<h2><a href="/">{$siteTitle}</a></h2>
+					<h2><a href="/{option:LANGUAGE}{$LANGUAGE}{/option:LANGUAGE}">{$siteTitle}</a></h2>
 				</div>
 
 				{* Skip link *}

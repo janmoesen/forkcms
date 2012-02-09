@@ -5,7 +5,7 @@
 		<header id="header">
 			{* Logo *}
 			<h2>
-				<a href="/">{$siteTitle}</a>
+				<a href="/{option:LANGUAGE}{$LANGUAGE}{/option:LANGUAGE}">{$siteTitle}</a>
 			</h2>
 
 			{* Language *}
